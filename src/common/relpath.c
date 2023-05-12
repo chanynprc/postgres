@@ -115,11 +115,6 @@ GetDatabasePath(Oid dbNode, Oid spcNode)
 	}
 	else if (spcNode == DEFAULTTABLESPACE_OID)
 	{
-		if (dbNode >= FirstNormalObjectId)
-		{
-			return psprintf("pg_shard/%u", dbNode);
-		}
-
 		/* The default tablespace is {datadir}/base */
 		return psprintf("base/%u", dbNode);
 	}
@@ -130,6 +125,33 @@ GetDatabasePath(Oid dbNode, Oid spcNode)
 						spcNode, TABLESPACE_VERSION_DIRECTORY, dbNode);
 	}
 }
+
+char *
+GetDatabaseShardPath(Oid dbNode, Oid spcNode, Oid shardNode)
+{
+	if (spcNode != DEFAULTTABLESPACE_OID)
+	{
+		ereport(ERROR,
+				(errcode(ERRCODE_INVALID_PARAMETER_VALUE),
+				 errmsg("invalid table space"),
+				 errhint("use default table space instead.")));
+	}
+
+	/* Shared system relations do not need this logic */
+	if (spcNode == DEFAULTTABLESPACE_OID)
+	{
+		/* The default tablespace is {datadir}/pg_shard */
+		return psprintf("pg_shard/%u.%u", dbNode, shardNode);
+	}
+	else
+	{
+		Assert (false);
+		/* All other tablespaces are accessed via symlinks */
+		return psprintf("pg_tblspc/%u/%s/%u",
+						spcNode, TABLESPACE_VERSION_DIRECTORY, dbNode);
+	}
+}
+
 
 /*
  * GetRelationPath - construct path to a relation's file
