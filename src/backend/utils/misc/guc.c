@@ -1974,6 +1974,16 @@ static struct config_bool ConfigureNamesBool[] =
 static struct config_int ConfigureNamesInt[] =
 {
 	{
+		{"shard_per_node", PGC_POSTMASTER, RESOURCES_DISK,
+			gettext_noop("Sets the number of shard in one node."),
+			NULL
+		},
+		&shard_per_node,
+		4, 1, INT_MAX / 2,
+		NULL, NULL, NULL
+	},
+
+	{
 		{"archive_timeout", PGC_SIGHUP, WAL_ARCHIVING,
 			gettext_noop("Forces a switch to the next WAL file if a "
 						 "new file has not been started within N seconds."),

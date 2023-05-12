@@ -115,7 +115,7 @@ GetDatabasePath(Oid dbNode, Oid spcNode)
 	else if (spcNode == DEFAULTTABLESPACE_OID)
 	{
 		/* The default tablespace is {datadir}/base */
-		return psprintf("base/%u", dbNode);
+		return psprintf("pg_shard/%u", dbNode);
 	}
 	else
 	{

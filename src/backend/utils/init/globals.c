@@ -133,6 +133,7 @@ int			MaxConnections = 90;
 int			max_worker_processes = 8;
 int			max_parallel_workers = 8;
 int			MaxBackends = 0;
+int			shard_per_node = 4;
 
 int			VacuumCostPageHit = 1;	/* GUC parameters for vacuum */
 int			VacuumCostPageMiss = 10;
