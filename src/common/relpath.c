@@ -18,6 +18,7 @@
 #include "postgres_fe.h"
 #endif
 
+#include "access/transam.h"
 #include "catalog/pg_tablespace_d.h"
 #include "common/relpath.h"
 #include "storage/backendid.h"
